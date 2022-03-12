@@ -1,7 +1,9 @@
 FROM node
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
+ENV NPM_CONFIG_LOGLEVEL warn
+RUN mkdir -p /usr/src/app
 EXPOSE 3000
-CMD ["node", "app.js"]
+WORKDIR /usr/src/app
+ADD package.json /usr/src/app/
+RUN npm install --production
+ADD . /usr/src/app/
+ENTRYPOINT ["npm", "start"]
